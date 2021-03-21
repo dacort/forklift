@@ -41,7 +41,7 @@ func (s3u *S3Uploader) newOutputFile(path string) *io.PipeWriter {
 			Body:   r1,
 		})
 		if err != nil {
-			fmt.Errorf("failed to upload file, %v", err)
+			fmt.Printf("failed to upload file, %v", err)
 		}
 		log.Printf("Completing file upload to, %s", result.Location)
 		s3u.wg.Done()

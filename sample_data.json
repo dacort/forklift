@@ -1,0 +1,2 @@
+{"event_type": "click", "data": {"uid": 1234, "path": "/signup"}}
+{"event_type": "login", "data": {"uid": 1234, "referer": "yak.shave"}}
