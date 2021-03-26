@@ -16,9 +16,9 @@ import (
 var templateURI string
 
 func getTemplateURI() string {
-	// First we check if there is an environment variable `TEMPLATE_URI`
+	// First we check if there is an environment variable `FORKLIFT_URI`
 	// If there is we use that.
-	val, ok := os.LookupEnv("TEMPLATE_URI")
+	val, ok := os.LookupEnv("FORKLIFT_URI")
 	if ok {
 		return val
 	}
