@@ -1,6 +1,10 @@
 #build stage
 FROM golang:alpine AS builder
 RUN apk add --no-cache git
+
+# CGO has to be disabled for alpine
+ENV CGO_ENABLED=0
+
 WORKDIR /go/src/app
 COPY . .
 RUN go get -d -v ./...
