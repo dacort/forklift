@@ -11,4 +11,6 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=builder /go/bin/forklift /forklift
 ENTRYPOINT ./forklift
+
 LABEL Name=forklift Version=0.0.1
+LABEL org.opencontainers.image.source https://github.com/dacort/forklift
