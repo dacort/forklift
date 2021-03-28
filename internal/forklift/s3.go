@@ -10,6 +10,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
@@ -34,7 +35,7 @@ func (s3u *S3Uploader) newOutputFile(path string) *io.PipeWriter {
 	go func() {
 		// Upload the file to S3.
 		log.Printf("Creating new S3 output file: %s", path)
-		bucket, key := s3u.getS3BucketAndKey(path)
+		bucket, key := getS3BucketAndKey(path)
 		result, err := s3u.uploader.Upload(&s3manager.UploadInput{
 			Bucket: aws.String(bucket),
 			Key:    aws.String(key),
@@ -50,7 +51,7 @@ func (s3u *S3Uploader) newOutputFile(path string) *io.PipeWriter {
 	return w1
 }
 
-func (s3u *S3Uploader) getS3BucketAndKey(path string) (string, string) {
+func getS3BucketAndKey(path string) (string, string) {
 	u, _ := url.Parse(path)
 	return u.Host, strings.TrimLeft(u.Path, "/")
 }
@@ -76,11 +77,30 @@ func (s3u *S3Uploader) Close() {
 	s3u.wg.Wait()
 }
 
+func bucketFinder(b string) string {
+	svc := s3.New(session.New(&aws.Config{
+		Region:                         aws.String("us-east-1"),
+		DisableRestProtocolURICleaning: aws.Bool(true),
+	}))
+
+	resp, err := svc.GetBucketLocation(&s3.GetBucketLocationInput{
+		Bucket: &b,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	return *resp.LocationConstraint
+}
+
 // NewS3Uploader initializes the S3 Uploader and returns a pointer to S3Uploader
 // in order to satisfy the interface requirements.
 func NewS3Uploader(u string) *S3Uploader {
 	log.Printf("Connecting to S3 with template: %s", u)
-	sess := session.Must(session.NewSession(&aws.Config{Region: aws.String("us-east-1")}))
+
+	bucket, _ := getS3BucketAndKey(u)
+	region := bucketFinder((bucket))
+	sess := session.Must(session.NewSession(&aws.Config{Region: aws.String(region)}))
 
 	return &S3Uploader{
 		templateURI: u,
