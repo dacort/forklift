@@ -1,6 +1,6 @@
 # Forklift
 
-A simple utility that can take stdin and redirects it to templatized paths on S3.
+A simple utility that can take stdin and redirect it to templatized paths on S3.
 
 ## Installing
 
@@ -13,7 +13,7 @@ Then pipe the sample file to a bucket!
 ```shell
 curl -o - \
     "https://raw.githubusercontent.com/dacort/forklift/main/sample_data.json" \
-    | forklift \-w 's3://forklift-demo/{{json "event_type"}}/{{today}}.json'
+    | forklift -w 's3://forklift-demo/{{json "event_type"}}/{{today}}.json'
 ```
 
 ## Overview
