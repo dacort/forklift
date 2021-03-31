@@ -5,7 +5,15 @@ A simple utility that can take stdin and redirects it to templatized paths on S3
 ## Installing
 
 ```shell
-go install ./cmd/forklift
+go get github.com/dacort/forklift/cmd/forklift
+```
+
+Then pipe the sample file to a bucket!
+
+```shell
+curl -o - \
+    "https://raw.githubusercontent.com/dacort/forklift/main/sample_data.json" \
+    | forklift \-w 's3://forklift-demo/{{json "event_type"}}/{{today}}.json'
 ```
 
 ## Overview
