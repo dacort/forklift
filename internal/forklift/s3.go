@@ -90,7 +90,13 @@ func bucketFinder(b string) string {
 		panic(err)
 	}
 
-	return *resp.LocationConstraint
+	// If this does *not* return a region, then it is in us-east-1
+	region := "us-east-1"
+	if resp.LocationConstraint != nil {
+		region = *resp.LocationConstraint
+	}
+
+	return region
 }
 
 // NewS3Uploader initializes the S3 Uploader and returns a pointer to S3Uploader
