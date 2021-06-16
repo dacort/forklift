@@ -35,7 +35,7 @@ func (jr JSONRecord) FormatPath(uri string) string {
 		"json": jr.JSONValue,
 		// "jsonFromKey":   jsonFromKey,
 		"today": today,
-		// "getYMDFromISO": getYMDFromISO,
+		"getYMDFromISO": getYMDFromISO,
 	}
 	tmpl, err := template.New("record").Funcs(funcMap).Parse(uri)
 	if err != nil {

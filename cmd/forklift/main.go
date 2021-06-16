@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -14,6 +15,9 @@ import (
 )
 
 var templateURI string
+var printVersion bool
+
+const FORKLIFT_VERSION = "0.0.2"
 
 func getTemplateURI() string {
 	// First we check if there is an environment variable `FORKLIFT_URI`
@@ -24,7 +28,6 @@ func getTemplateURI() string {
 	}
 
 	// Second, we check for a `-w` command-line argument.
-	flag.Parse()
 	return templateURI
 
 	// If we don't find either, the main routine will just create a passthrough writer
@@ -61,8 +64,18 @@ func getInputFromPipeOrCmd() io.Reader {
 }
 
 func main() {
+	if printVersion == true {
+		fmt.Printf("Forklift v%s\n", FORKLIFT_VERSION)
+		os.Exit(0)
+	}
+
 	var writer forklift.Destination
 	u := getTemplateURI()
+
+	if u == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
 
 	reader := bufio.NewScanner(getInputFromPipeOrCmd())
 
@@ -83,6 +96,9 @@ func main() {
 }
 
 func init() {
-	flag.StringVar(&templateURI, "w", "", "URI template for the output location")
+	flag.StringVar(&templateURI, "w", "", "URI template for the output location (can also be provided with env var FORKLIFT_URI).")
+	flag.BoolVar(&printVersion, "v", false, "Print the version and exit.")
+
+	flag.Parse()
 
 }
