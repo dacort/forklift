@@ -14,7 +14,7 @@ func today() string {
 // getYMDFromISOreturns the Y-m-d string from an ISO-formatted-ish date
 // araddon/dateparse will be helpful here
 func getYMDFromISO(d string) string {
-	return strings.Split(d, " ")[0]
+	return d[:10]
 }
 
 // jsonFromKey retrieves the string value from the root key provided
