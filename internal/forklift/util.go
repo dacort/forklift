@@ -2,7 +2,6 @@ package forklift
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 )
 
