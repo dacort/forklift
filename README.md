@@ -43,6 +43,10 @@ That will upload two different files:
 1. `s3://bucket/click/2021-02-18.json`
 2. `s3://bucket/login/2021-02-18.json`
 
+### Default behavior
+
+Note that the default behavior of `forklift` is to simply echo whatever is passed to it to stdout. This is partially because I build `forklift` into another project, as noted in the section below.
+
 ## Advanced Usage
 
 Again, while not terribly interesting as a standalone CLI, where this becomes particularly useful is with `cargo-crates`. This is a sample project that makes it easy to captial-e Extract data from third-party services without having to be a data engineering wizard. 
@@ -53,7 +57,7 @@ For example, I've got an Oura ring and want to extract my sleep data. With the O
 docker run -e OURA_PAT ghcr.io/dacort/crates-oura sleep
 ```
 
-And that'll return a JSON blog with my sleep data for the past 7 days. But let's say I want to drop that sleep data into a location on S3 based on when I went to bed:
+And that'll return a JSON blob with my sleep data for the past 7 days. But let's say I want to drop that sleep data into a location on S3 based on when I went to bed:
 
 ```shell
 docker run -e OURA_PAT ghcr.io/dacort/crates-oura sleep | forklift  -w 's3://bucket/{{json "bedtime_start" | ymdFromTimestamp }}/sleep_data.json'

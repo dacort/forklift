@@ -16,8 +16,9 @@ import (
 
 var templateURI string
 var printVersion bool
+var getHelp bool
 
-const FORKLIFT_VERSION = "0.0.2"
+const FORKLIFT_VERSION = "0.0.3"
 
 func getTemplateURI() string {
 	// First we check if there is an environment variable `FORKLIFT_URI`
@@ -69,13 +70,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	var writer forklift.Destination
-	u := getTemplateURI()
-
-	if u == "" {
+	if getHelp == true {
 		flag.Usage()
 		os.Exit(1)
 	}
+
+	var writer forklift.Destination
+	u := getTemplateURI()
 
 	reader := bufio.NewScanner(getInputFromPipeOrCmd())
 
@@ -97,6 +98,7 @@ func main() {
 
 func init() {
 	flag.StringVar(&templateURI, "w", "", "URI template for the output location (can also be provided with env var FORKLIFT_URI).")
+	flag.BoolVar(&getHelp, "h", false, "Get usage information.")
 	flag.BoolVar(&printVersion, "v", false, "Print the version and exit.")
 
 	flag.Parse()
