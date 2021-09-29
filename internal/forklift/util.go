@@ -3,7 +3,6 @@ package forklift
 import (
 	"encoding/json"
 	"time"
-	"strconv"
 )
 
 // today returns the current UTC date
@@ -17,15 +16,13 @@ func getYMDFromISO(d string) string {
 	return d[:10]
 }
 
-func getYMDFromUnixUTC(ts string) string {
-	i, _ := strconv.ParseInt(ts, 10, 64)
-	unixTime := time.Unix(i, 0)
+func getYMDFromUnixUTC(ts float64) string {
+	unixTime := time.Unix(int64(ts), 0)
 	return unixTime.Format("2006-01-02")
 }
 
-func getYMDFromUnixNano(ts string) string {
-	i, _ := strconv.ParseInt(ts, 10, 64)
-	unixTime := time.Unix(i/1000, 0)
+func getYMDFromUnixNano(ts float64) string {
+	unixTime := time.Unix(int64(ts)/1000, 0)
 	return unixTime.Format("2006-01-02")
 }
 

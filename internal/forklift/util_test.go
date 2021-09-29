@@ -14,7 +14,7 @@ func TestGetYMDFromISO(t *testing.T) {
 }
 
 func TestGetYMDFromUnixUTC(t *testing.T) {
-    ts := "1601305234"
+    ts := float64(1601305234)
     expected := "2020-09-28"
     ymd := getYMDFromUnixUTC(ts)
 
@@ -24,7 +24,7 @@ func TestGetYMDFromUnixUTC(t *testing.T) {
 }
 
 func TestGetYMDFromUnixNano(t *testing.T) {
-    ts := "1601305234262"
+    ts := float64(1601305234262)
     expected := "2020-09-28"
     ymd := getYMDFromUnixNano(ts)
 
