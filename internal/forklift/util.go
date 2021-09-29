@@ -3,6 +3,7 @@ package forklift
 import (
 	"encoding/json"
 	"time"
+	"fmt"
 )
 
 // today returns the current UTC date
@@ -33,5 +34,21 @@ func jsonFromKey(key string, s string) string {
 	if err != nil {
 		panic(err)
 	}
-	return m[key].(string)
+	v := m[key]
+	// fmt.Printf("%v", m[key])
+	// return fmt.Sprintf("%q", m[key])
+
+	// Figured we would have to start adding type detection at some point...
+	switch v.(type) {
+	case string:
+		return v.(string)
+	case float64:
+		if (v.(float64) == float64(int64(v.(float64)))) {
+			return fmt.Sprintf("%d", int64(v.(float64)))
+		} else {
+			return fmt.Sprintf("%f", v)
+		}
+	default:
+		return fmt.Sprintf("%v", v)
+	}
 }
