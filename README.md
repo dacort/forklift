@@ -5,7 +5,7 @@ A simple utility that can take stdin and redirect it to templatized paths on S3.
 ## Installing
 
 ```shell
-go get github.com/dacort/forklift/cmd/forklift
+go install github.com/dacort/forklift/cmd/forklift@latest
 ```
 
 Then pipe the sample file to a bucket!
