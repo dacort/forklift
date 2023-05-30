@@ -31,11 +31,16 @@ func (jr JSONRecord) FormatPath(uri string) string {
 	var formattedPath bytes.Buffer
 
 	// Can we do this elsewhere?
+	// Also how can we change this so some commands (like today) don't execute for **EVERY** row?
+	// Nm, I think if we want a standard prefix that's just part of the original URL
 	funcMap := template.FuncMap{
 		"json": jr.JSONValue,
 		// "jsonFromKey":   jsonFromKey,
-		"today": today,
+		"today":         today,
 		"getYMDFromISO": getYMDFromISO,
+		"now":           now,
+		"strftime":      strftime,
+		"unique":        unique,
 	}
 	tmpl, err := template.New("record").Funcs(funcMap).Parse(uri)
 	if err != nil {
